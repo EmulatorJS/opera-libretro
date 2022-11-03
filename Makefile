@@ -303,8 +303,9 @@ else ifeq ($(platform), libnx)
 # Emscripten
 else ifeq ($(platform), emscripten)
    TARGET := $(TARGET_NAME)_libretro_$(platform).bc
-   STATIC_LINKING = 1
    THREADED_DSP = 0
+   HAVE_CHD = 1
+   STATIC_LINKING = 1
 
 # Windows MSVC 2003 Xbox 1
 else ifeq ($(platform), xbox1_msvc2003)
@@ -556,7 +557,12 @@ ifeq ($(DEBUG), 1)
    endif
       CFLAGS += -DDEBUG
 else
-   OPT        = -O2
+   ifeq ($(platform), emscripten)
+      OPT        = -O3
+   else
+      OPT        = -O2
+   endif
+
    CFLAGS    += -DNDEBUG
 
    ifneq (,$(findstring msvc,$(platform)))
