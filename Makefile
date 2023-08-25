@@ -2,6 +2,7 @@ DEBUG = 0
 HAVE_CHD = 1
 THREADED_DSP = 1
 HAVE_CDROM = 0
+EMULATORJS_THREADS ?= 0
 
 ifeq ($(platform),)
 platform = unix
@@ -303,9 +304,14 @@ else ifeq ($(platform), libnx)
 # Emscripten
 else ifeq ($(platform), emscripten)
    TARGET := $(TARGET_NAME)_libretro_$(platform).bc
-   THREADED_DSP = 0
    HAVE_CHD = 1
    STATIC_LINKING = 1
+   ifeq ($(EMULATORJS_THREADS), 1)
+      SHARED := -pthread
+   else
+      THREADED_DSP = 0
+   endif
+   
 
 # Windows MSVC 2003 Xbox 1
 else ifeq ($(platform), xbox1_msvc2003)
