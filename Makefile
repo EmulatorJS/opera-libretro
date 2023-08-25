@@ -308,6 +308,8 @@ else ifeq ($(platform), emscripten)
    STATIC_LINKING = 1
    ifeq ($(EMULATORJS_THREADS), 1)
       SHARED := -pthread
+      CFLAGS += -pthread
+      CXXFLAGS += -pthread
    else
       THREADED_DSP = 0
    endif
